@@ -1,11 +1,11 @@
 const fs = require("fs");
 const inquirer = require("inquirer");
-const { Circle, Square, Triangle } = require("./lib/shapes"); 
+const { Circle, Square, Triangle } = require("./shapes");
 
 class Svg {
     constructor() {
-        this.textElement = '';
-        this.shapeElement = '';
+        this.textElement = "";
+        this.shapeElement = "";
     }
 
     render() {
@@ -17,16 +17,17 @@ class Svg {
     }
 
     setShapeElement(shape) {
-        this.shapeElement = shape.render();
+        this.shapeElement = shape.generateSVG(); // changed the method name here
     }
 }
 
 function writeToFile(fileName, data) {
-    fs.writeFile(fileName, data, function (err) { 
+    fs.writeFile(fileName, data, function (err) {
         if (err) {
-            return console.log(err);
+            console.error(err); //fixed the error
+        } else {
+            console.log("Impressive! You've successfully crafted your image.👏👏👏  Well done!");
         }
-        console.log("Impressive! You've successfully crafted your image.👏👏👏  Well done!");
     });
 }
 
@@ -68,7 +69,6 @@ async function init() {
     // Prompt the user for answers
     const answers = await inquirer.prompt(questions);
 
-    //user text
     var user_text = "";
     if (answers.text.length > 0 && answers.text.length <= 3) {
         user_text = answers.text;
@@ -77,7 +77,7 @@ async function init() {
         return;
     }
     console.log("User text: [" + user_text + "]");
-    //user font color
+    
     const user_font_color = answers["text-color"];
     console.log("User font color: [" + user_font_color + "]");
     //user shape color
